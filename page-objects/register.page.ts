@@ -10,11 +10,9 @@ exports.RegisterPage = class RegisterPage {
 
     this.newPassword = page.locator("[id='input-password']");
     this.passwordConfirm = page.locator("[id='input-confirm']");
-    this.newsletterRadioButton = page.getByRole("radio", {
-      name: "newsletter",
-    });
-    this.privacyPolicyCheckbox = page.getByRole("checkbox", { name: "agree" });
-    this.continueButton = page.getByRole("submit");
+    this.newsletterRadioButton = page.locator('css=input[type="radio"]').nth(1);
+    this.privacyPolicyCheckbox = page.locator('css=input[type="checkbox"]');
+    this.continueButton = page.locator("text=Continue");
   }
 
   async enterPersonalDetails(
@@ -35,9 +33,15 @@ exports.RegisterPage = class RegisterPage {
   }
 
   async registerAccount() {
-    //await this.newsletterRadioButton.click(); //figure out this function <---- locators for radio button + checkbox + continue button!!!
-    //await this.privacyPolicyCheckbox.check();
+    await this.newsletterRadioButton.check();
+    await this.privacyPolicyCheckbox.check();
     await this.continueButton.click();
+
+    await expect(
+      page.getByText("Your Account Has Been Created!")
+    ).toBeVisible();
+
+    //toDo:figure out a way to redirect the expect to the newPage, possibly can just hardcode a redirect URL?
   }
 
   async waitForPageLoad(): Promise<void> {}

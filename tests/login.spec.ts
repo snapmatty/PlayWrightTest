@@ -1,6 +1,7 @@
 import { test, expect, Browser, Page, Locator } from "@playwright/test";
 import { chromium, firefox } from "playwright";
 import { LoginPage } from "../page-objects/login.page";
+import { faker } from "@faker-js/faker/locale/en";
 
 test.describe("Login", () => {
   let loginPage: LoginPage;
@@ -12,9 +13,9 @@ test.describe("Login", () => {
   });
 
   const testData = {
-    invalidEmail: "testemail@op.pl",
+    invalidEmail: faker.internet.email() + "1231231",
     invalidPassword: "password123",
-    validEmail: "validemailtest@otest.com",
+    validEmail: faker.internet.email({ firstName: "valid" }),
     validPassword: "playwright@123",
   };
 
