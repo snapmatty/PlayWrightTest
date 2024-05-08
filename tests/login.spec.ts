@@ -1,56 +1,55 @@
-import {test, expect, Browser, Page, Locator} from '@playwright/test'
-import { chromium, firefox } from 'playwright'
-import { LoginPage } from '../page-objects/login-page';
+import { test, expect, Browser, Page, Locator } from "@playwright/test";
+import { chromium, firefox } from "playwright";
+import { LoginPage } from "../page-objects/login.page";
 
+test.describe("Login", () => {
+  let loginPage: LoginPage;
 
-test.describe("Login Page", () => {
-
-let loginPage: LoginPage
-
-test.beforeEach(async ({page}) => {
-    const browser:Browser =  await firefox.launch({headless:false});
+  test.beforeEach(async ({ page }) => {
+    const browser: Browser = await firefox.launch({ headless: false });
     loginPage = new LoginPage(page);
-    await loginPage.goto()
-
-});
+    await loginPage.gotoLogin();
+  });
 
   const testData = {
     invalidEmail: "testemail@op.pl",
     invalidPassword: "password123",
-    validEmail: "testingvalid@test333.com",
-    validPassword: "valid3443",
+    validEmail: "validemailtest@otest.com",
+    validPassword: "playwright@123",
   };
 
-test('should not allow login with invalid credentials', async({page})=>{
+  test("should not allow login with invalid credentials", async ({ page }) => {
+    await loginPage.enterEmail(testData.invalidEmail);
+    await loginPage.enterPassword(testData.invalidPassword);
+    await loginPage.clickLogin();
 
-    const emailId:Locator = await page.locator('[id="input-email"]');
-    const password:Locator = await page.locator('[id="input-password"]');
-    const loginButton:Locator = await page.locator("[value='Login']");
+    await expect(
+      page.getByText("Warning: No match for E-Mail Address and/or Password.")
+    ).toBeVisible();
+  });
 
-    emailId.fill(testData.invalidEmail);
-    password.fill(testData.invalidPassword);
-    loginButton.click();
+  test("should lock user after too many login requests", async ({ page }) => {
+    await loginPage.enterEmail(testData.invalidEmail);
+    await loginPage.enterPassword(testData.invalidPassword);
+    await loginPage.clickLogin();
 
-    await expect(page.getByText("Warning: No match for E-Mail Address and/or Password.")).toBeVisible() 
-});
+    await expect(
+      page.getByText(
+        "Warning: Your account has exceeded allowed number of login attempts. Please try again in 1 hour."
+      )
+    ).toBeVisible();
+  });
 
-test('should allow login with valid credentials', async({page})=>{
+  test("should allow login with valid credentials", async ({ page }) => {
+    await loginPage.enterEmail(testData.validEmail);
+    await loginPage.enterPassword(testData.validPassword);
+    await loginPage.clickLogin();
 
-    const emailId:Locator = await page.locator('[id="input-email"]');
-    const password:Locator = await page.locator('[id="input-password"]');
-    const loginButton:Locator = await page.locator("[value='Login']");
+    const title = await page.title();
+    console.log("home page title:", title);
 
-    emailId.fill(testData.validEmail);
-    password.fill(testData.validPassword);
-    loginButton.click();
+    await page.screenshot({ path: "homepage.png" });
 
-    await expect(page.getByText("Warning: No match for E-Mail Address and/or Password.")).toBeVisible() 
-});
-
-test('should allow registration', async({page})=>{
-
-    await loginPage.gotoRegister()
-
-});
-
+    expect(title).toEqual("My Account");
+  });
 });
