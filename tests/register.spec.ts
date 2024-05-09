@@ -8,6 +8,8 @@ test.describe("Register", () => {
 
   test.beforeEach(async ({ page }) => {
     const browser: Browser = await firefox.launch({ headless: false });
+    const context = await browser.newContext();
+
     registerPage = new RegisterPage(page);
     await registerPage.gotoRegister();
   });
@@ -19,7 +21,6 @@ test.describe("Register", () => {
     cellPhone: faker.phone.number(),
     newPassword: "newpasswordString123",
     passwordConfirm: "newpasswordString123",
-    invalidEmail: "123123123123qwdqwedqqwd",
   };
 
   test("should allow register with valid credentials", async ({ page }) => {
@@ -31,21 +32,27 @@ test.describe("Register", () => {
       testData.newPassword,
       testData.passwordConfirm
     );
-    await registerPage.registerAccount();
+    await registerPage.registerAccount(page);
+    await page.waitForURL(
+      "https://naveenautomationlabs.com/opencart/index.php?route=account/success"
+    );
+    await expect(
+      page.getByText("Your Account Has Been Created!")
+    ).toBeVisible();
   });
 
-  // test('should allow register with valid credentials', async({page})=>{
-
-  //     await loginPage.enterEmail(testData.validEmail)
-  //     await loginPage.enterPassword(testData.validPassword)
-  //     await loginPage.clickLogin()
-
-  //     const title = await page.title();
-  //     console.log("home page title:", title);
-
-  //     await page.screenshot({path: 'homepage.png'});
-
-  //     expect(title).toEqual('My Account');
-
-  // });
+  test("should not allow register with unaccepted policy", async ({ page }) => {
+    await registerPage.enterPersonalDetails(
+      testData.firstName,
+      testData.lastName,
+      testData.inputEmail,
+      testData.cellPhone,
+      testData.newPassword,
+      testData.passwordConfirm
+    );
+    await registerPage.registerAccountNoPolicy();
+    await expect(
+      page.getByText(" Warning: You must agree to the Privacy Policy!")
+    ).toBeVisible();
+  });
 });
