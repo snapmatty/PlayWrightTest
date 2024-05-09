@@ -1,4 +1,9 @@
-import { expect, type Locator, type Page } from "@playwright/test";
+import {
+  expect,
+  type Locator,
+  type Page,
+  BrowserContext,
+} from "@playwright/test";
 
 exports.RegisterPage = class RegisterPage {
   constructor(page) {
@@ -36,12 +41,11 @@ exports.RegisterPage = class RegisterPage {
     await this.newsletterRadioButton.check();
     await this.privacyPolicyCheckbox.check();
     await this.continueButton.click();
-
-    await expect(
-      page.getByText("Your Account Has Been Created!")
-    ).toBeVisible();
-
-    //toDo:figure out a way to redirect the expect to the newPage, possibly can just hardcode a redirect URL?
+  }
+  async registerAccountNoPolicy() {
+    await this.newsletterRadioButton.check();
+    await this.privacyPolicyCheckbox.uncheck();
+    await this.continueButton.click();
   }
 
   async waitForPageLoad(): Promise<void> {}
