@@ -10,6 +10,8 @@ exports.LandingPage = class LandingPage {
   featuredPhone: any;
   continueButton: any;
   landingSearchButton: any;
+  featuredItemsRow: any;
+  checkoutButton: any;
 
   constructor(page: {
     locator: (arg0: string) => any;
@@ -27,6 +29,8 @@ exports.LandingPage = class LandingPage {
     this.featuredMacBook = page.locator('//*[@id="content"]/div[2]/div[1]/div');
     this.featuredPhone = page.locator('//*[@id="content"]/div[2]/div[2]/div');
     this.loginButton = page.locator('//*[@id="top-links"]/ul/li[2]/ul/li[2]/a');
+    this.featuredItemsRow = page.locator('//*[@id="content"]/div[2]');
+    this.checkoutButton = page.locator('//*[@id="top-links"]/ul/li[5]');
   }
 
   async waitForPageLoad(): Promise<void> {}
@@ -49,5 +53,9 @@ exports.LandingPage = class LandingPage {
   async searchItem(itemName: string) {
     await this.landingSearch.fill(itemName);
     await this.landingSearchButton.click();
+  }
+
+  async featuredItem(itemName: string) {
+    await this.featuredItemsRow.getByAltText(itemName).click();
   }
 };
