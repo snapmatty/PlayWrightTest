@@ -6,7 +6,24 @@ import {
 } from "@playwright/test";
 
 exports.RegisterPage = class RegisterPage {
-  constructor(page) {
+  page: any;
+  firstName: any;
+  lastName: any;
+  inputEmail: any;
+  telePhone: any;
+  newPassword: any;
+  passwordConfirm: any;
+  newsletterRadioButton: any;
+  privacyPolicyCheckbox: any;
+  continueButton: any;
+
+  constructor(page: {
+    locator: (arg0: string) => {
+      (): any;
+      new (): any;
+      nth: { (arg0: number): any; new (): any };
+    };
+  }) {
     this.page = page;
     this.firstName = page.locator('[id="input-firstname"]');
     this.lastName = page.locator('[id="input-lastname"]');
@@ -21,12 +38,12 @@ exports.RegisterPage = class RegisterPage {
   }
 
   async enterPersonalDetails(
-    firstName,
-    lastName,
-    inputEmail,
-    telePhone,
-    newPassword,
-    passwordConfirm
+    firstName: string,
+    lastName: string,
+    inputEmail: string,
+    telePhone: string,
+    newPassword: string,
+    passwordConfirm: string
   ) {
     await this.firstName.fill(firstName);
     await this.lastName.fill(lastName);
@@ -54,5 +71,9 @@ exports.RegisterPage = class RegisterPage {
     await this.page.goto(
       "https://naveenautomationlabs.com/opencart/index.php?route=account/register"
     );
+  }
+
+  async goToUserAccount() {
+    await this.continueButton.click();
   }
 };
