@@ -58,4 +58,8 @@ exports.LandingPage = class LandingPage {
   async featuredItem(itemName: string) {
     await this.featuredItemsRow.getByAltText(itemName).click();
   }
+
+  async featuredItemToCart(item: string) {
+    await this.featuredItemsRow.getByAltText(itemName).click("Add to Cart");
+  }
 };
