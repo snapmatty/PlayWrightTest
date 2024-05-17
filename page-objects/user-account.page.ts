@@ -27,6 +27,9 @@ exports.UserAccountPage = class UserAccountPage {
   continueButton: any;
   newsletterSubscriptionNavButton: any;
   newsletterRadioButtonYes: any;
+  changePasswordNavButton: any;
+  changePassOldPassInput: any;
+  changePassNewPassInput: any;
 
   constructor(page: {
     locator: (arg0: string) => any;
@@ -49,6 +52,11 @@ exports.UserAccountPage = class UserAccountPage {
     this.newsletterRadioButtonYes = page.locator(
       '//*[@id="content"]/form/fieldset/div/div/label[1]/input'
     );
+    this.changePasswordNavButton = page.locator(
+      '//*[@id="content"]/ul[1]/li[2]/a'
+    );
+    this.changePassOldPassInput = page.locator('[id="input-password"]');
+    this.changePassNewPassInput = page.locator('[id="input-confirm"]');
   }
 
   async waitForPageLoad(): Promise<void> {}
@@ -70,6 +78,13 @@ exports.UserAccountPage = class UserAccountPage {
   async newsletterSubscriptionAccept() {
     await this.newsletterSubscriptionNavButton.click();
     await this.newsletterRadioButtonYes.check();
+    await this.continueButton.click();
+  }
+
+  async changePassword(oldPassword: string, newPassword: string) {
+    await this.changePasswordNavButton.click();
+    await this.changePassOldPassInput.fill(oldPassword);
+    await this.changePassNewPassInput.fill(newPassword);
     await this.continueButton.click();
   }
 };
