@@ -42,6 +42,7 @@ test.describe("User Account", () => {
     newLastName: faker.person.lastName(),
     newEmail: faker.internet.email(),
     newCellPhone: faker.phone.number(),
+    oldPassword: "newpasswordString123",
     newPassword: "newpasswordString123",
     passwordConfirm: "newpasswordString123",
   };
@@ -64,6 +65,16 @@ test.describe("User Account", () => {
       page.getByText(
         "Success: Your newsletter subscription has been successfully updated!"
       )
+    ).toBeVisible();
+  });
+
+  test("should allow to change password", async ({ page }) => {
+    await userAccountPage.changePassword(
+      testData.oldPassword,
+      testData.newPassword
+    );
+    await expect(
+      page.getByText("Success: Your password has been successfully updated.")
     ).toBeVisible();
   });
 });
