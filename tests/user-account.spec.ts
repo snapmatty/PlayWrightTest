@@ -42,6 +42,10 @@ test.describe("User Account", () => {
     newLastName: faker.person.lastName(),
     newEmail: faker.internet.email(),
     newCellPhone: faker.phone.number(),
+    address: faker.location.streetAddress(),
+    city: faker.location.city(),
+    postCode: faker.location.zipCode(),
+
     oldPassword: "newpasswordString123",
     newPassword: "newpasswordString123",
     passwordConfirm: "newpasswordString123",
@@ -75,6 +79,19 @@ test.describe("User Account", () => {
     );
     await expect(
       page.getByText("Success: Your password has been successfully updated.")
+    ).toBeVisible();
+  });
+  
+  test("should allow to add address", async ({ page }) => {
+    await userAccountPage.modifyAddressBook(
+      testData.firstName,
+      testData.lastName,
+      testData.address,
+      testData.city,
+      testData.postCode
+    );
+    await expect(
+      page.getByText(" Your address has been successfully added")
     ).toBeVisible();
   });
 });

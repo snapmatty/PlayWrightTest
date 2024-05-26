@@ -30,6 +30,14 @@ exports.UserAccountPage = class UserAccountPage {
   changePasswordNavButton: any;
   changePassOldPassInput: any;
   changePassNewPassInput: any;
+  modifyAddressBookNavButton: any;
+  addAddressButton: any;
+  modifyAddressFirstNameInput: any;
+  modifyAddressLastNameInput: any;
+  modifyAddressAddressInput: any;
+  modifyAddressCityInput: any;
+  modifyAddressPostCodeInput: any;
+  modifyAddressRegionDropDown: any;
 
   constructor(page: {
     locator: (arg0: string) => any;
@@ -57,6 +65,17 @@ exports.UserAccountPage = class UserAccountPage {
     );
     this.changePassOldPassInput = page.locator('[id="input-password"]');
     this.changePassNewPassInput = page.locator('[id="input-confirm"]');
+    this.modifyAddressBookNavButton = page.locator(
+      '//*[@id="content"]/ul[1]/li[3]/a'
+    );
+    this.addAddressButton = page.locator('//*[@id="content"]/div/div[2]/a');
+    this.modifyAddressFirstNameInput = page.locator('[id="input-firstname"]');
+    this.modifyAddressLastNameInput = page.locator('[id="input-lastname"]');
+    this.modifyAddressAddressInput = page.locator('[id="input-address-1"]');
+    this.modifyAddressCityInput = page.locator('[id="input-city"]');
+    this.modifyAddressAddressInput = page.locator('[id="input-city"]');
+    this.modifyAddressPostCodeInput = page.locator('[id="input-postcode"]');
+    this.modifyAddressRegionDropDown = page.locator('[//*[@id="input-zone"]');
   }
 
   async waitForPageLoad(): Promise<void> {}
@@ -85,6 +104,25 @@ exports.UserAccountPage = class UserAccountPage {
     await this.changePasswordNavButton.click();
     await this.changePassOldPassInput.fill(oldPassword);
     await this.changePassNewPassInput.fill(newPassword);
+    await this.continueButton.click();
+  }
+
+  async modifyAddressBook(
+    firstName: string,
+    lastName: string,
+    address: string,
+    city: string,
+    postCode: string
+  ) {
+    await this.modifyAddressBookNavButton.click();
+    await this.addAddressButton.click();
+    await this.waitForPageLoad();
+    await this.modifyAddressFirstNameInput.fill(firstName);
+    await this.modifyAddressLastNameInput.fill(lastName);
+    await this.modifyAddressAddressInput.fill(address);
+    await this.modifyAddressCityInput.fill(city);
+    await this.modifyAddressPostCodeInput.fill(postCode);
+    await this.modifyAddressRegionDropDown.selectOption({ value: 3513 }); //figure out the selectOption not working; perhaps the page needs to laod a bit before the form can be used?
     await this.continueButton.click();
   }
 };
