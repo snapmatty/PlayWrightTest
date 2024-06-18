@@ -1,5 +1,5 @@
 
-# PlayWright Test E-Commerce Webste
+# PlayWright Test E-Commerce Website
 
 This is a short project including E2E Tests for a mock up E-Commerce Website using PlayWright with TypeScript.
 
