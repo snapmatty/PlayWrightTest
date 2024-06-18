@@ -30,7 +30,7 @@ test.describe("Cart", () => {
     await itemPage.waitForPageLoad();
     await itemPage.checkTitle(testData.chosenItem);
     await itemPage.addToCart();
-    await itemPage.goToCart();
+    await itemPage.goToCartLink();
     cartPage = new CartPage(page);
     await cartPage.waitForPageLoad();
     await cartPage.changeQuantity(testData.itemQuantity);

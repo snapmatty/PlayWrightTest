@@ -1,6 +1,13 @@
 import { expect, type Locator, type Page } from "@playwright/test";
 
 exports.LoginPage = class LoginPage {
+  page: any;
+  emailId: any;
+  password: any;
+  loginButton: any;
+  continueBUtton: any;
+  continueButton: any;
+  
   constructor(page) {
     this.page = page;
     this.emailId = page.locator('[id="input-email"]');

@@ -6,6 +6,7 @@ exports.ItemPage = class ItemPage {
   searchTitle: string;
   addtoCartButton: any;
   checkoutButton: any;
+  goToCartNotificationLink: any;
 
   constructor(page: {
     locator: (arg0: string) => any;
@@ -15,6 +16,9 @@ exports.ItemPage = class ItemPage {
     this.searchTitle = page.locator('//*[@id="content"]/div/div[2]/h1');
     this.addtoCartButton = page.locator("id=button-cart");
     this.checkoutButton = page.locator('//*[@id="top-links"]/ul/li[5]');
+    this.goToCartNotificationLink = page.locator(
+      '//*[@id="product-product"]/div[1]/a[2]'
+    );
   }
 
   async waitForPageLoad(): Promise<void> {}
@@ -23,6 +27,10 @@ exports.ItemPage = class ItemPage {
     await expect(this.searchTitle).toContainText(itemName, {
       ignoreCase: true,
     });
+  }
+
+  async goToCartLink() {
+    await this.goToCartNotificationLink.click();
   }
 
   async addToCart() {
