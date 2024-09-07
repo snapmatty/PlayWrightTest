@@ -73,9 +73,9 @@ exports.UserAccountPage = class UserAccountPage {
     this.modifyAddressLastNameInput = page.locator('[id="input-lastname"]');
     this.modifyAddressAddressInput = page.locator('[id="input-address-1"]');
     this.modifyAddressCityInput = page.locator('[id="input-city"]');
-    this.modifyAddressAddressInput = page.locator('[id="input-city"]');
+    this.modifyAddressAddressInput = page.locator('[id="input-address-1"]');
     this.modifyAddressPostCodeInput = page.locator('[id="input-postcode"]');
-    this.modifyAddressRegionDropDown = page.locator('[//*[@id="input-zone"]');
+    this.modifyAddressRegionDropDown = page.locator('[id="input-zone"]');
   }
 
   async waitForPageLoad(): Promise<void> {}
@@ -122,7 +122,8 @@ exports.UserAccountPage = class UserAccountPage {
     await this.modifyAddressAddressInput.fill(address);
     await this.modifyAddressCityInput.fill(city);
     await this.modifyAddressPostCodeInput.fill(postCode);
-    await this.modifyAddressRegionDropDown.selectOption({ value: 3513 }); //figure out the selectOption not working; perhaps the page needs to laod a bit before the form can be used?
+    await this.page.waitForSelector("#input-zone:enabled");
+    await this.modifyAddressRegionDropDown.selectOption({ value: "3513" }); //figure out the selectOption not working; perhaps the page needs to laod a bit before the form can be used?
     await this.continueButton.click();
   }
 };

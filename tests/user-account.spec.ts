@@ -81,7 +81,7 @@ test.describe("User Account", () => {
       page.getByText("Success: Your password has been successfully updated.")
     ).toBeVisible();
   });
-  
+
   test("should allow to add address", async ({ page }) => {
     await userAccountPage.modifyAddressBook(
       testData.firstName,
@@ -91,7 +91,7 @@ test.describe("User Account", () => {
       testData.postCode
     );
     await expect(
-      page.getByText(" Your address has been successfully added")
+      page.getByText("Your address has been successfully added")
     ).toBeVisible();
   });
 });
