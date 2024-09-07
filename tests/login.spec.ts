@@ -30,15 +30,26 @@ test.describe("Login", () => {
   });
 
   test("should lock user after too many login requests", async ({ page }) => {
-    await loginPage.enterEmail(testData.invalidEmail);
-    await loginPage.enterPassword(testData.invalidPassword);
-    await loginPage.clickLogin();
+    let errorMessageFound = false;
+    const errorMessage =
+      "Warning: Your account has exceeded allowed number of login attempts. Please try again in 1 hour.";
 
-    await expect(
-      page.getByText(
-        "Warning: Your account has exceeded allowed number of login attempts. Please try again in 1 hour."
-      )
-    ).toBeVisible();
+    while (!errorMessageFound) {
+      await loginPage.enterEmail(testData.invalidEmail);
+      await loginPage.enterPassword(testData.invalidPassword);
+      await loginPage.clickLogin();
+
+      await page.waitForTimeout(2000); // Wait for 2 seconds for error message to appear
+
+      errorMessageFound = await page.$eval(
+        "body",
+        (body, errorMessage) => {
+          return body.innerText.includes(errorMessage);
+        },
+        errorMessage
+      );
+    }
+    await expect(page.getByText(errorMessage)).toBeVisible();
   });
 
   test("should allow login with valid credentials", async ({ page }) => {
