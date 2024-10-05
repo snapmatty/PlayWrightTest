@@ -3,7 +3,7 @@
 
 This is a short project including E2E Tests for a mock up E-Commerce Website using PlayWright with TypeScript.
 
-It includes 14 E2E tests going through the features of the Application.
+It includes 12 E2E tests going through the features of the Application.
 
 
 
@@ -11,8 +11,8 @@ It includes 14 E2E tests going through the features of the Application.
 
 - Page Object Model approach
 - Full purchase path E2Es
-- Automated Feature tests (profile page changes, page navigation, order details)
-- Browser Specific E2Es
+- Automated Feature tests (User profile page changes, general page navigation, order details paths)
+- E2Es can be suited to run on all browsers (by default Chromium is setup)
 
 
 ## Installation
